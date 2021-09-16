@@ -12,5 +12,9 @@
 > - Order items from the warehouse.
 > - Log actions from users.
 > - Reporting.
+> 
+> ### Project Status
+> 
+> under construction
 
 Author: [Iáskara Pimentel](https://github.com/iaskarapimentel)
