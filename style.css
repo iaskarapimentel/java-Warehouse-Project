@@ -41,7 +41,7 @@
   
   .bg-light {
     background-color: #f4f4f4;
-    color: #333;
+    /* color: #333; */
   }
   
   .bg-dark {
@@ -70,8 +70,10 @@
   .py-3 {padding: 30px 0;}
   
   /* Main Styling */
+  
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
     line-height: 1.7em;
   }
   
@@ -88,6 +90,8 @@
     margin: 10px 0;
   }
   
+  /* Navbar */
+
   #navbar {
     background-color: #333;
     color: #fff;
@@ -165,7 +169,7 @@
     padding-bottom: 30px;
   }
   
-  /* Features */
+  /* Icons */
   
   .box {
     float: left;
@@ -199,133 +203,53 @@
     min-height: 100%;
   }
 
-  /* Table  */
+/* Table  */
 
-.showing-table-box {
-  padding: 0px;
-  margin: 0px;
-  margin-top: 10px;
-	width: 100%;
+.features {
+  border-collapse: collapse;
 }
 
-.showing-table-box td {
-    padding: 0px;
-    border-left: 1px solid transparent;
+.features__cell {
+  max-width: 250px;
+  font-size: 0.9em;
+  font-weight: normal;
+  padding: 0.5em 1em;
+  color: #333333;
+  border: 1px solid #f4f4f4;
+  line-height: 1.4;
 }
 
-.showing-table-box .showing-table-box-list td {
-    padding: 10px 8px;
-    font-weight: 500;
-    text-align: center;
-    font-size: 14px;
-    background: #F9F9F9;
+.features__cell--bold {
+  font-weight: bold;
 }
 
-.showing-table-box .showing-table-box-list td:first-child {
-    font-weight: 400;
-    text-align: left;
-    border-left: 0px;
-    font-size: 14px;
-    color: #060606;
+.features__cell--shaded {
+  background-color: #eeeeee;
 }
 
-.showing-table-box .showing-table-box-list:nth-child(2n) td {
-    background: #F2F2F2;
+.features__cell--large {
+  font-size: 1.25em;
 }
 
-.showing-table-box .showing-table-box-text h2 {
-    font-size: 25px;
-    font-weight: 300;
-    line-height: 30px;
-    margin: 0px;
-    padding: 0px;
-    text-align: center;
-    color: #333;
+.features__cell--center {
+  text-align: center;
 }
 
-.showing-table-box .showing-table-box-text p {
-    font-size: 12px;
-    font-weight: 400;
-    text-align: center;
-    color: #666;
-    margin-top: 10px;
+.features__tick--yes:after {
+  content: "\2714";
+  font-size: 1.5em;
+  color: #151F48;
 }
 
-.showing-table-box .showing-table-box-item .showing-table-box-item-head {
-    padding: 10px 5px;
-    text-align: center;
-    background-color: #2ac4ea!important;
-    box-shadow: 0 -2px rgba(0, 0, 0, .1) inset;
-    -moz-box-shadow: 0 -2px rgba(0, 0, 0, .1) inset;
-    -webkit-box-shadow: 0 -2px rgba(0, 0, 0, .1) inset;
-    -o-box-shadow: 0 -2px rgba(0, 0, 0, .1) inset;
+.features__tick--no:after{
+  content: "\2715";
+  font-size: 1.5em;
+  color: #BB2020;
 }
 
-.showing-table-box .showing-table-box-item .showing-table-box-item-head p {
-    font-size: 17px;
-    font-weight: 600;
-    line-height: 21px;
-    text-transform: uppercase;
-    margin-bottom: 0px;
-}
+/* Contact */
 
-.showing-table-box .showing-table-box-item .showing-table-box-item-price {
-    padding: 15px 10px;
-    text-align: center;
-    color: #84cbe6;
-    background: #F9F9F9;
-}
 
-.showing-table-box .showing-table-box-item .showing-table-box-item-price p {
-    font-size: 31px;
-    font-weight: 600;
-    line-height: 36px;
-    margin-bottom: 0px;
-}
-
-.showing-table-box .showing-table-box-item .showing-table-box-item-price p span {
-    font-size: 12px;
-    font-weight: 300;
-}
-
-.showing-table-box .showing-table-box-item .showing-table-box-item-price > span {
-    font-size: 12px;
-    font-weight: 400;
-    color: #009AD7
-}
-
-.showing-table-box .showing-table-box-item .showing-table-box-item-purchase {
-    padding: 10px 5px;
-    background: #FFF;
-}
-
-.showing-table-box-item-purchase .btn {
-    text-transform: uppercase;
-    margin-bottom: 0px;
-    background-color: #2ac4ea;
-    box-shadow: 0 -2px rgba(0, 0, 0, .1);
-    -moz-box-shadow: 0 -2px rgba(0, 0, 0, .1);
-    -webkit-box-shadow: 0 -2px rgba(0, 0, 0, .1);
-    -o-box-shadow: 0 -2px rgba(0, 0, 0, .1);
-    border: none;
-    padding: 11px 0;
-}
-
-.showing-table-box .showing-table-box-list:nth-child(1n) td.second-row {
-    background: #F2F2F2;
-}
-
-.showing-table-box .showing-table-box-list:nth-child(2n) td.second-row {
-    background: #dedede;
-}
-
-.showing-table-box .showing-table-box-list:nth-child(1n) td.fourth-row {
-    background: #F2F2F2;
-}
-
-.showing-table-box .showing-table-box-list:nth-child(2n) td.fourth-row {
-    background: #dedede;
-} 
 
 /* Footer */
   
