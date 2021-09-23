@@ -9,11 +9,16 @@
       2. google-java-format
       3. EduTools
       4. Atom Material Icons
-      5. MaterialThemIULite
+      5. Material Theme IU Lite
 5. Download the JDK
 6. Connect the Intellij with GitHub
    1. on the home screen click on
       1. Get from VCS
       2. GitHub
          1. choose your profile
-    
+         
+
+The ideal structure for a project is:
+- 
+  - Public  - This folder is for frontend files.
+  - src - This folder is for main and test.
