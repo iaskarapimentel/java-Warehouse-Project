@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Welcome to Warehouse Management System">
   <meta name="keywords" content="Berlin, Germany, Warehouse Management System, WMS">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <title>Warehouse Management System</title>
 </head>
@@ -17,7 +18,7 @@
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a class="current" href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <!-- <li><a href="contact.html">Contact</a></li> -->
           </ul>
         </div>
       </nav>
@@ -27,102 +28,105 @@
       <div class="container">
         <div class="info-left">
           <h1 class="l-heading"><span class="text-primary">About</span> Warehouse</h1>
-          <p>Some warehouse management software solutions look a lot like inventory 
-              management software, but most are oriented 
-              more towards the physical and logistical aspects of warehouse management. </p>        
+          <p>A warehouse management system (WMS) is a software solution that offersvisibility into a business’ entire inventory and manages supply chain fulfillment operations from the distribution center to the store shelf.</p>
+          <p>Warehouse Management (WMS) solutions additionally enable companies to maximize their labor and space utilization and equipment investments by coordinating and optimizing resource usage and material flows. Specifically, WMS systems are designed to support the needs of an entire global supply chain, including distribution, manufacturing, asset-intensive, and service businesses.</p>
+          <p>In today’s dynamic, omnichannel, fulfillment economy, connected consumers want to buy anywhere, fulfill anywhere, and return anywhere. In order to be able to meet this need, businesses need the ability to respond quickly with warehouse management software that optimizes fulfillment capabilities.</p>     
         </div>
         <div class="info-right">
-          <img src="WM-Overview.png" alt="Warehouse overview">
+          <img src="/img/WM-Overview.png" alt="Warehouse overview">
         </div>
       </div>
     </section>
     <div class="clr"></div>
 
-    <section>
-        <div id="features" class="py-3">
-            <div class="container">
-              <h2 class="l-heading">
-                What WMS have?
-              </h2>
-              <div class="bg-primary">
-                <div style="height:50px;clear:both;">
-                </div>
-                <div class="col-md-10 col-md-offset-1">
-                    <table class="showing-table-box">
-                        <tbody>
-                            <tr>
-                                <td width="30%" class="showing-table-box-text">
-                                    <h2>THE <br/> FEATURES</h2>
-                                </td>
-                                <td width="20%">
-                                    <div class="showing-table-box-item">
-                                        <div class="showing-table-box-item-head">
-                                            <p>WMS</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td width="20%">
-                                    <div class="showing-table-box-item">
-                                        <div class="showing-table-box-item-head">
-                                            <p>Competition</p>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr class="showing-table-box-list">
-                              <td class="first-row">Inbound Operations</td>
-                              <td class="second-row"></td>
-                              <td class="third-row"></td>
-                          </tr>
-                          <tr class="showing-table-box-list">
-                              <td class="first-row">Dock Scheduling</td>
-                              <td class="second-row"></td>
-                              <td class="third-row"></td>
-                          </tr>
-                          <tr class="showing-table-box-list">
-                              <td class="first-row">Appointment Scheduling</td>
-                              <td class="second-row"></td>
-                              <td class="third-row"></td>
-                          </tr>
-                          <tr class="showing-table-box-list">
-                              <td class="first-row">Cross-Docking</td>
-                              <td class="second-row"></td>
-                              <td class="third-row"></td>
-                          </tr>
-                          <tr class="showing-table-box-list">
-                              <td class="first-row">Advanced Shipping Notifications</td>
-                              <td class="second-row"></td>
-                              <td class="third-row"></td>
-                          </tr>
-                          <tr class="showing-table-box-list">
-                              <td class="first-row">Electronic Order Entrys</td>
-                              <td class="second-row"></td>
-                              <td class="third-row"></td>
-                          </tr>
-                          <tr class="showing-table-box-list">
-                              <td class="first-row">WIP Materials Tracking</td>
-                              <td class="second-row"></td>
-                              <td class="third-row"></td>
-                          </tr>
-                          <tr class="showing-table-box-list">
-                              <td class="first-row">WIP Materials Tracking</td>
-                              <td class="second-row"></td>
-                              <td class="third-row"></td>
-                          </tr>
-                          <tr class="showing-table-box-list">
-                              <td class="first-row">Kitting & Assembly</td>
-                              <td class="second-row"></td>
-                              <td class="third-row"></td>
-                          </tr>
-                                  </div>
-                              </td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>       
-          </div>
+    <section class="container py-3">
+      <table class="features">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="features__cell features__cell--bold features__cell--shaded features__cell--large">WMS</th>
+                <th class="features__cell features__cell--bold features__cell--shaded features__cell--large">Competition</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="features__cell features__cell--bold" colspan="4">Core Functionality</td>
+            </tr>
+            <tr>
+                <td class="features__cell">A user system with roles and permissions for listing and placing orders.</td>
+                <td class="features__cell features__cell--center">
+                    <span class="features__tick--yes"></span>
+                </td>
+                <td class="features__cell features__cell--center">
+                    <span class="features__tick--yes"></span>
+                </td>
+            </tr>
+            <tr>
+              <td class="features__cell">Maintain the stock of a warehouse.</td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--yes"></span>
+              </td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--no"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="features__cell">Order items from the warehouse.</td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--yes"></span>
+              </td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--no"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="features__cell">Log actions from users.</td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--yes"></span>
+              </td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--yes"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="features__cell">Reporting.</td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--yes"></span>
+              </td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--yes"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="features__cell">Cost-reduction through Resource Optimization</td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--yes"></span>
+              </td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--no"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="features__cell">Inbound and Outbound Flow of Inventory</td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--yes"></span>
+              </td>
+              <td class="features__cell features__cell--center">
+                  <span class="features__tick--no"></span>
+              </td>
+            </tr> 
+        </tbody>
+    </table>
     </section>
+
+    <section class="container py-3">
+      <div class="container-contact">
+        <h3>Contact:</h3>
+        <p>Iaskara Pimentel</p>
+        <p>iaskarapimentel@wms.com</p>
+      </div>
+    </section>
+
     <footer id="main-footer">
         WMS &copy; All Rights Reserved.
     </footer>
