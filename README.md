@@ -1,20 +1,24 @@
-> # WAREHOUSE JAVA PROJECT
-> 
-> This is a web application for a Warehouse Management System.
-> 
-> ## What is a warehouse?
-> A **warehouse management system** (**WMS**) is a software application designed to support and optimize warehouse functionality and distribution center management.
-> Warehouses provide a **centralized location for your goods**, making it easier to track and manage your inventory. By investing in a warehouse, you'll store, ship and distribute products more efficiently.
-> 
-> ### Expected Features
-> - A user system with roles and permissions for listing and placing orders.
-> - Maintain the stock of a warehouse.
-> - Order items from the warehouse.
-> - Log actions from users.
-> - Reporting.
-> 
-> ### Project Status
-> 
-> under construction
+# Setup information Intellij IDEA
 
-Author: [Iáskara Pimentel](https://github.com/iaskarapimentel)
+1. Open Intellij IDEA
+2. Go to preferences
+3. Plugins
+4. Marketplace 
+   1. In the search bar enter the plugins name.
+      1. .ignore
+      2. google-java-format
+      3. EduTools
+      4. Atom Material Icons
+      5. Material Theme IU Lite
+5. Download the JDK
+6. Connect the Intellij with GitHub
+   1. on the home screen click on
+      1. Get from VCS
+      2. GitHub
+         1. choose your profile
+         
+
+The ideal structure for a project is:
+- 
+  - Public  - This folder is for frontend files.
+  - src - This folder is for main and test.
