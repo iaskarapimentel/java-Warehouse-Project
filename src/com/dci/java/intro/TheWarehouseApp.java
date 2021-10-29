@@ -20,10 +20,10 @@ public class TheWarehouseApp {
             int choice = theManager.getUsersChoice();
             theManager.performAction(choice);
 
-            // confirm to do more
-//            if (!theManager.confirm("Do you want to perform another action?")) {
-//                theManager.quit();
-//            }
+//             confirm to do more
+            if (!theManager.confirm("Do you want to perform another action?")) {
+                theManager.quit();
+            }
 
         } while (true);
     }

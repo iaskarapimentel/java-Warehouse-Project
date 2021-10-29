@@ -41,8 +41,6 @@ public class TheWarehouseManager {
     }
 
 //    /** Ask for user's choice of action */
-//    Imprimir e pegar a opcao que o usuario escolheu
-//    pegar e retornar o numero dado no input
     public int getUsersChoice() {
     // TODO
         System.out.println("Please choose one option: ");
@@ -52,9 +50,24 @@ public class TheWarehouseManager {
     }
 
     /** Initiate an action based on given option */
-//    Fazer um switch case
-    public void performAction(int option) {
+//    Do um switch case
+    public void performAction(int userChoice) {
         // TODO
+        switch (userChoice) {
+            case 1:
+                listItemsByWarehouse();
+                System.out.println("Would you like to perform another action? ");
+            break;
+            case 2:
+                askItemToOrder();
+                searchItemAndPlaceOrder();
+                break;
+            case 3:
+                quit();
+                break;
+            default:
+                System.out.println("Sorry, this operation is not valid. ");
+        }
     }
 
     /**
@@ -62,9 +75,10 @@ public class TheWarehouseManager {
      *
      * @return action
      */
-//    public boolean confirm(String message) {
-//        // TODO
-//    }
+    public boolean confirm(String message) {
+        // TODO
+        return false;
+    }
 
     /** End the application */
     public void quit() {
@@ -85,19 +99,39 @@ public class TheWarehouseManager {
     /** Print a welcome message with the given user's name */
     private void greetUser() {
         // TODO
-        System.out.println("Hello " + this.userName + " welcome to our Warehouse System. How can I help you?");
+        System.out.println("Hello " + this.userName + " .Welcome to our Warehouse System. How can I help you?");
     }
 
+//    1-List items by warehouse
     private void listItemsByWarehouse() {
         // TODO
+        System.out.println("WAREHOUSE1");
+        listItems(WAREHOUSE1);
+        System.out.println("WAREHOUSE2");
+        listItems(WAREHOUSE2);
     }
 
     private void listItems(String[] warehouse) {
         // TODO
+        for (String listItems : warehouse) {
+            System.out.println(listItems);
+        }
     }
-
+    public int searchItemInWarehouse(String[] warehouse, String searchItem){
+        int numOfItems = 0;
+        for (String item : warehouse) {
+            if(searchItem.contains(item)){
+                numOfItems++;
+            }
+        }
+        return numOfItems;
+    }
+//  Ask the user to input an item name and search the warehouses
     private void searchItemAndPlaceOrder() {
         // TODO
+        askItemToOrder();
+        searchItemInWarehouse(WAREHOUSE1, askItemToOrder());
+        searchItemInWarehouse(WAREHOUSE2, askItemToOrder());
     }
 
     /**
@@ -105,9 +139,12 @@ public class TheWarehouseManager {
      *
      * @return String itemName
      */
-//    private String askItemToOrder() {
-//        // TODO
-//    }
+    private String askItemToOrder() {
+        // TODO
+        System.out.println("Please enter the item that your are looking for it: ");
+        String searchItem = reader.nextLine();
+        return searchItem;
+    }
 
     /**
      * Calculate total availability of the given item
