@@ -15,16 +15,16 @@ public class TheWarehouseApp {
         // Welcome User
         theManager.welcomeUser();
 
-        // Get the user's choice of action and perform action
-//        do {
-//            int choice = theManager.getUsersChoice();
-//            theManager.performAction(choice);
-//
-//            // confirm to do more
+//         Get the user's choice of action and perform action
+        do {
+            int choice = theManager.getUsersChoice();
+            theManager.performAction(choice);
+
+            // confirm to do more
 //            if (!theManager.confirm("Do you want to perform another action?")) {
 //                theManager.quit();
 //            }
-//
-//        } while (true);
+
+        } while (true);
     }
 }

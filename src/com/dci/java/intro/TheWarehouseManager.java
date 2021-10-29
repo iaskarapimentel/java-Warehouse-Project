@@ -34,12 +34,25 @@ public class TheWarehouseManager {
         this.greetUser();
     }
 
-    /** Ask for user's choice of action */
-//    public int getUsersChoice() {
-//        // TODO
-//    }
+    public void printingChoices(){
+        for(String option : this.userOptions){
+            System.out.println(option);
+        }
+    }
+
+//    /** Ask for user's choice of action */
+//    Imprimir e pegar a opcao que o usuario escolheu
+//    pegar e retornar o numero dado no input
+    public int getUsersChoice() {
+    // TODO
+        System.out.println("Please choose one option: ");
+        printingChoices();
+        int userChoice = reader.nextInt();
+        return userChoice;
+    }
 
     /** Initiate an action based on given option */
+//    Fazer um switch case
     public void performAction(int option) {
         // TODO
     }
