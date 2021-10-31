@@ -46,20 +46,19 @@ public class TheWarehouseManager {
         System.out.println("Please choose one option: ");
         printingChoices();
         int userChoice = reader.nextInt();
+        reader.nextLine();
         return userChoice;
     }
 
     /** Initiate an action based on given option */
 //    Do um switch case
     public void performAction(int userChoice) {
-        // TODO
         switch (userChoice) {
             case 1:
                 listItemsByWarehouse();
                 System.out.println("Would you like to perform another action? ");
             break;
             case 2:
-                askItemToOrder();
                 searchItemAndPlaceOrder();
                 break;
             case 3:
@@ -99,7 +98,7 @@ public class TheWarehouseManager {
     /** Print a welcome message with the given user's name */
     private void greetUser() {
         // TODO
-        System.out.println("Hello " + this.userName + " .Welcome to our Warehouse System. How can I help you?");
+        System.out.println("Hello " + this.userName + ". Welcome to our Warehouse System. How can I help you?");
     }
 
 //    1-List items by warehouse
@@ -117,21 +116,59 @@ public class TheWarehouseManager {
             System.out.println(listItems);
         }
     }
-    public int searchItemInWarehouse(String[] warehouse, String searchItem){
+
+    /**
+     *
+     * @param warehouse list of items in the warehouse
+     * @param itemName the item that the user is looking for it.
+     * @return the number of items that searchItem
+     */
+
+    public int searchItemInWarehouse(String[] warehouse, String itemName){
         int numOfItems = 0;
         for (String item : warehouse) {
-            if(searchItem.contains(item)){
+            if(itemName.contains(item)){
                 numOfItems++;
             }
         }
         return numOfItems;
     }
-//  Ask the user to input an item name and search the warehouses
+
+//    Ask the user to input an item name and search the warehouses
+//    if has item - ask user if he wants to order the item
+//    if the user choose y - proceed with order method (independent one)
     private void searchItemAndPlaceOrder() {
-        // TODO
-        askItemToOrder();
-        searchItemInWarehouse(WAREHOUSE1, askItemToOrder());
-        searchItemInWarehouse(WAREHOUSE2, askItemToOrder());
+        String itemName = askItemToOrder();
+
+        int numItemsWarehouse1 = searchItemInWarehouse(WAREHOUSE1, itemName);
+        int numItemsWarehouse2 = searchItemInWarehouse(WAREHOUSE2, itemName);
+        printingAvailability(numItemsWarehouse1, numItemsWarehouse2);
+        if( numItemsWarehouse1 != 0 || numItemsWarehouse2 != 0){
+            System.out.println("Would you like to order this item?(y/n)");
+        }
+    }
+
+//    Search item
+//    total of items - location
+    private void printingAvailability(int numItemsWarehouse1, int numItemsWarehouse2){
+        if(numItemsWarehouse1 > 0 && numItemsWarehouse2 == 0 ){
+            System.out.println("Amount available: " + numItemsWarehouse1 + "\nLocation: Warehouse 1.");
+        }
+        if(numItemsWarehouse1 == 0 && numItemsWarehouse2 > 0){
+            System.out.println("Amount available: " + numItemsWarehouse2 + "\nLocation: Warehouse 2.");
+        }
+        if(numItemsWarehouse1 > 0 && numItemsWarehouse2 > 0){
+            System.out.println("Amount available: " + (numItemsWarehouse1 + numItemsWarehouse2));
+            System.out.println("Location: Both warehouses");
+            if (numItemsWarehouse1 > numItemsWarehouse2) {
+                System.out.println("Maximum availability: " + numItemsWarehouse1 + " in Warehouse 1");
+            } else {
+                System.out.println("Maximum availability: " + numItemsWarehouse2 + " in Warehouse 2");
+            }
+        }
+        if(numItemsWarehouse1 == 0 && numItemsWarehouse2 == 0 ){
+            System.out.println("Not in stock");
+        }
     }
 
     /**
@@ -142,8 +179,8 @@ public class TheWarehouseManager {
     private String askItemToOrder() {
         // TODO
         System.out.println("Please enter the item that your are looking for it: ");
-        String searchItem = reader.nextLine();
-        return searchItem;
+        String itemName = reader.nextLine();
+        return itemName;
     }
 
     /**
