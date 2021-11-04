@@ -1,6 +1,10 @@
-package com.dci.java.intro;
-import static com.dci.java.intro.Repository.WAREHOUSE1;
-import static com.dci.java.intro.Repository.WAREHOUSE2;
+package com.dci.project;
+import com.dci.project.data.Item;
+import com.dci.project.data.Repository;
+
+//import static resources.data.json;
+//import static dci.java.intro.Repository.WAREHOUSE1;
+//import static dci.java.intro.Repository.WAREHOUSE2;
 
 import java.util.Scanner;
 import java.util.*;
@@ -59,7 +63,7 @@ public class TheWarehouseManager {
 //                System.out.println("Would you like to perform another action? ");
             break;
             case 2:
-                searchItemAndPlaceOrder();
+//                searchItemAndPlaceOrder();
                 break;
             case 3:
                 quit();
@@ -102,18 +106,19 @@ public class TheWarehouseManager {
     }
 
 //    1-List items by warehouse
+//    the method that take the number of warehouse as parameter is Rep.getWarehouse();
     private void listItemsByWarehouse() {
-        // TODO
-        System.out.println("WAREHOUSE1");
-        listItems(WAREHOUSE1);
-        System.out.println("WAREHOUSE2");
-        listItems(WAREHOUSE2);
+        Set<Integer> idsWarehouse = Repository.getWarehouses();
+        for(int id : idsWarehouse){
+            List<Item> itemsByWarehouse = Repository.getItemsByWarehouse(id);
+            listItems(itemsByWarehouse);
+        }
     }
 
-    private void listItems(String[] warehouse) {
-        // TODO
-        for (String listItems : warehouse) {
-            System.out.println(listItems);
+//    This method is printing
+    private void listItems(List<Item> itemsByWarehouse) {
+        for (Item item : itemsByWarehouse) {
+            System.out.println(item);
         }
     }
 
@@ -138,20 +143,20 @@ public class TheWarehouseManager {
 //    if has item - ask user if he wants to order the item
 //    if the user choose y - proceed with order method (independent one)
 //    Open a space for the client type his answer y or n
-    private void searchItemAndPlaceOrder() {
-        String itemName = askItemToOrder();
-
-        int numItemsWarehouse1 = searchItemInWarehouse(WAREHOUSE1, itemName);
-        int numItemsWarehouse2 = searchItemInWarehouse(WAREHOUSE2, itemName);
-        int itemsAvailableInAllWarehouse = checkingAvailability(numItemsWarehouse1, numItemsWarehouse2);
-        if( itemsAvailableInAllWarehouse > 0){
-            System.out.println("Would you like to order this item?(y/n)");
-                if (userAnswerToOrder(reader.nextLine()) != "no") {
-//                    create the method for order and invoke here
-                    System.out.println("He answer yes");
-            }
-        }
-    }
+//    private void searchItemAndPlaceOrder() {
+//        String itemName = askItemToOrder();
+//
+//        int numItemsWarehouse1 = searchItemInWarehouse(WAREHOUSE1, itemName);
+//        int numItemsWarehouse2 = searchItemInWarehouse(WAREHOUSE2, itemName);
+//        int itemsAvailableInAllWarehouse = checkingAvailability(numItemsWarehouse1, numItemsWarehouse2);
+//        if( itemsAvailableInAllWarehouse > 0){
+//            System.out.println("Would you like to order this item?(y/n)");
+//                if (userAnswerToOrder(reader.nextLine()) != "no") {
+////                    create the method for order and invoke here
+//                    System.out.println("He answer yes");
+//            }
+//        }
+//    }
 //take the user answer if y place order if n
     public String userAnswerToOrder(String answer) {
         return answer;

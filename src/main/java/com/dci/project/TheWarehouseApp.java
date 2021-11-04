@@ -1,4 +1,4 @@
-package com.dci.java.intro;
+package com.dci.project;
 /**
  *
  * @author riteshp
