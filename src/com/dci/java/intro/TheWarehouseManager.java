@@ -143,21 +143,26 @@ public class TheWarehouseManager {
 
         int numItemsWarehouse1 = searchItemInWarehouse(WAREHOUSE1, itemName);
         int numItemsWarehouse2 = searchItemInWarehouse(WAREHOUSE2, itemName);
-        printingAvailability(numItemsWarehouse1, numItemsWarehouse2);
-        if( numItemsWarehouse1 != 0 || numItemsWarehouse2 != 0){
+        int itemsAvailableInAllWarehouse = checkingAvailability(numItemsWarehouse1, numItemsWarehouse2);
+        if( itemsAvailableInAllWarehouse > 0){
             System.out.println("Would you like to order this item?(y/n)");
+                if (userAnswerToOrder(reader.nextLine()) != "no") {
+//                    create the method for order and invoke here
+                    System.out.println("He answer yes");
+            }
         }
     }
 //take the user answer if y place order if n
     public String userAnswerToOrder(String answer) {
-        return reader.nextLine();
+        return answer;
     }
 
 //    Search item
 //    total of items - location
 //    Change this method to getAvailableAmount to return the number of items instead only printing
 //    You need this numbers to place order.
-    private int printingAvailability(int numItemsWarehouse1, int numItemsWarehouse2){
+    private int checkingAvailability(int numItemsWarehouse1, int numItemsWarehouse2){
+
         if(numItemsWarehouse1 > 0 && numItemsWarehouse2 == 0 ){
             System.out.println("Amount available: " + numItemsWarehouse1 + "\nLocation: Warehouse 1.");
             return numItemsWarehouse1;
@@ -178,10 +183,7 @@ public class TheWarehouseManager {
             }
             return (numItemsWarehouse1 + numItemsWarehouse2);
         }
-        if(numItemsWarehouse1 == 0 && numItemsWarehouse2 == 0 ){
-            System.out.println("Not in stock");
-            return 0;
-        }
+        System.out.println("Not in stock");
         return 0;
     }
 
@@ -205,8 +207,6 @@ public class TheWarehouseManager {
      */
 //    private int getAvailableAmount(String itemName) {
 //        // TODO
-
-
 //    }
 
     /**
