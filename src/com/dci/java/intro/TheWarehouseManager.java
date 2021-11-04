@@ -56,7 +56,7 @@ public class TheWarehouseManager {
         switch (userChoice) {
             case 1:
                 listItemsByWarehouse();
-                System.out.println("Would you like to perform another action? ");
+//                System.out.println("Would you like to perform another action? ");
             break;
             case 2:
                 searchItemAndPlaceOrder();
@@ -137,6 +137,7 @@ public class TheWarehouseManager {
 //    Ask the user to input an item name and search the warehouses
 //    if has item - ask user if he wants to order the item
 //    if the user choose y - proceed with order method (independent one)
+//    Open a space for the client type his answer y or n
     private void searchItemAndPlaceOrder() {
         String itemName = askItemToOrder();
 
@@ -147,16 +148,26 @@ public class TheWarehouseManager {
             System.out.println("Would you like to order this item?(y/n)");
         }
     }
+//take the user answer if y place order if n
+    public String userAnswerToOrder(String answer) {
+        return reader.nextLine();
+    }
 
 //    Search item
 //    total of items - location
-    private void printingAvailability(int numItemsWarehouse1, int numItemsWarehouse2){
+//    Change this method to getAvailableAmount to return the number of items instead only printing
+//    You need this numbers to place order.
+    private int printingAvailability(int numItemsWarehouse1, int numItemsWarehouse2){
         if(numItemsWarehouse1 > 0 && numItemsWarehouse2 == 0 ){
             System.out.println("Amount available: " + numItemsWarehouse1 + "\nLocation: Warehouse 1.");
+            return numItemsWarehouse1;
         }
+
         if(numItemsWarehouse1 == 0 && numItemsWarehouse2 > 0){
             System.out.println("Amount available: " + numItemsWarehouse2 + "\nLocation: Warehouse 2.");
+            return numItemsWarehouse2;
         }
+
         if(numItemsWarehouse1 > 0 && numItemsWarehouse2 > 0){
             System.out.println("Amount available: " + (numItemsWarehouse1 + numItemsWarehouse2));
             System.out.println("Location: Both warehouses");
@@ -165,10 +176,13 @@ public class TheWarehouseManager {
             } else {
                 System.out.println("Maximum availability: " + numItemsWarehouse2 + " in Warehouse 2");
             }
+            return (numItemsWarehouse1 + numItemsWarehouse2);
         }
         if(numItemsWarehouse1 == 0 && numItemsWarehouse2 == 0 ){
             System.out.println("Not in stock");
+            return 0;
         }
+        return 0;
     }
 
     /**
@@ -191,6 +205,8 @@ public class TheWarehouseManager {
      */
 //    private int getAvailableAmount(String itemName) {
 //        // TODO
+
+
 //    }
 
     /**
