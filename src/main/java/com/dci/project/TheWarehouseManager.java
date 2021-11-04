@@ -6,6 +6,7 @@ import com.dci.project.data.Repository;
 //import static dci.java.intro.Repository.WAREHOUSE1;
 //import static dci.java.intro.Repository.WAREHOUSE2;
 
+import java.sql.Array;
 import java.util.Scanner;
 import java.util.*;
 
@@ -111,7 +112,9 @@ public class TheWarehouseManager {
         Set<Integer> idsWarehouse = Repository.getWarehouses();
         for(int id : idsWarehouse){
             List<Item> itemsByWarehouse = Repository.getItemsByWarehouse(id);
+            System.out.println("WAREHOUSE" + id);
             listItems(itemsByWarehouse);
+            System.out.println("Total items in WAREHOUSE : " +id+  ":" + itemsByWarehouse.size());
         }
     }
 
