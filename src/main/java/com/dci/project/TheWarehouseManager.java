@@ -64,7 +64,7 @@ public class TheWarehouseManager {
 //                System.out.println("Would you like to perform another action? ");
             break;
             case 2:
-//                searchItemAndPlaceOrder();
+                searchItemAndPlaceOrder();
                 break;
             case 3:
                 quit();
@@ -127,15 +127,16 @@ public class TheWarehouseManager {
 
     /**
      *
-     * @param warehouse list of items in the warehouse
+     * @param itemsByWarehouse list of items in the warehouse
      * @param itemName the item that the user is looking for it.
      * @return the number of items that searchItem
      */
 
-    public int searchItemInWarehouse(String[] warehouse, String itemName){
+    public int searchItemInWarehouse(List<Item> itemsByWarehouse, String itemName){
+
         int numOfItems = 0;
-        for (String item : warehouse) {
-            if(itemName.contains(item)){
+        for (Item item : itemsByWarehouse) {
+            if(itemName.toLowerCase().contains(item.toString().toLowerCase())){
                 numOfItems++;
             }
         }
@@ -146,20 +147,27 @@ public class TheWarehouseManager {
 //    if has item - ask user if he wants to order the item
 //    if the user choose y - proceed with order method (independent one)
 //    Open a space for the client type his answer y or n
-//    private void searchItemAndPlaceOrder() {
-//        String itemName = askItemToOrder();
-//
-//        int numItemsWarehouse1 = searchItemInWarehouse(WAREHOUSE1, itemName);
-//        int numItemsWarehouse2 = searchItemInWarehouse(WAREHOUSE2, itemName);
-//        int itemsAvailableInAllWarehouse = checkingAvailability(numItemsWarehouse1, numItemsWarehouse2);
-//        if( itemsAvailableInAllWarehouse > 0){
-//            System.out.println("Would you like to order this item?(y/n)");
-//                if (userAnswerToOrder(reader.nextLine()) != "no") {
-////                    create the method for order and invoke here
-//                    System.out.println("He answer yes");
-//            }
-//        }
-//    }
+
+//    numItemsByWarehouse each element in the array list is the quantity of items in one warehouse
+    private void searchItemAndPlaceOrder() {
+        String itemName = askItemToOrder();
+
+        Set<Integer> idsWarehouse = Repository.getWarehouses();
+        List<Integer> numItemsByWarehouse = new ArrayList<Integer>();
+        for(int id : idsWarehouse) {
+            List<Item> itemsByWarehouse = Repository.getItemsByWarehouse(id);
+            numItemsByWarehouse.add(searchItemInWarehouse(itemsByWarehouse, itemName));
+        }
+
+        int itemsAvailableInAllWarehouse = checkingAvailability(numItemsByWarehouse.get(0), numItemsByWarehouse.get(1));
+        if( itemsAvailableInAllWarehouse > 0){
+            System.out.println("Would you like to order this item?(y/n)");
+                if (Objects.equals(userAnswerToOrder(reader.nextLine()), "y")) {
+//                    create the method for order and invoke here
+                    System.out.println("He answer yes");
+            }
+        }
+    }
 //take the user answer if y place order if n
     public String userAnswerToOrder(String answer) {
         return answer;
