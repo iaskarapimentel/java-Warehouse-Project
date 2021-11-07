@@ -146,7 +146,6 @@ public class TheWarehouseManager {
 //    Ask the user to input an item name and search the warehouses
 //    if has item - ask user if he wants to order the item
 //    if the user choose y - proceed with order method (independent one)
-//    Open a space for the client type his answer y or n
 
 //    numItemsByWarehouse each element in the array list is the quantity of items in one warehouse
     private void searchItemAndPlaceOrder() {
@@ -159,12 +158,11 @@ public class TheWarehouseManager {
             numItemsByWarehouse.add(searchItemInWarehouse(itemsByWarehouse, itemName));
         }
 
-        int itemsAvailableInAllWarehouse = checkingAvailability(numItemsByWarehouse.get(0), numItemsByWarehouse.get(1));
-        if( itemsAvailableInAllWarehouse > 0){
+        int availableAmount = checkingAvailability(numItemsByWarehouse.get(0), numItemsByWarehouse.get(1));
+        if( availableAmount > 0){
             System.out.println("Would you like to order this item?(y/n)");
                 if (Objects.equals(userAnswerToOrder(reader.nextLine()), "y")) {
-//                    create the method for order and invoke here
-                    System.out.println("He answer yes");
+                    askAmountAndConfirmOrder(availableAmount, itemName);
             }
         }
     }
@@ -177,6 +175,13 @@ public class TheWarehouseManager {
 //    total of items - location
 //    Change this method to getAvailableAmount to return the number of items instead only printing
 //    You need this numbers to place order.
+
+    /**
+     *
+     * @param numItemsWarehouse1
+     * @param numItemsWarehouse2
+     * @return
+     */
     private int checkingAvailability(int numItemsWarehouse1, int numItemsWarehouse2){
 
         if(numItemsWarehouse1 > 0 && numItemsWarehouse2 == 0 ){
@@ -215,30 +220,21 @@ public class TheWarehouseManager {
         return itemName;
     }
 
-    /**
-     * Calculate total availability of the given item
-     *
-     * @param itemName itemName
-     * @return integer availableCount
-     */
-//    private int getAvailableAmount(String itemName) {
-//        // TODO
-//    }
-
-    /**
-     * Find the count of an item in a given warehouse
-     *
-     * @param item the item
-     * @param warehouse the warehouse
-     * @return count
-     */
-//    private int find(String item, String[] warehouse) {
-//        // TODO
-//    }
-
-    /** Ask order amount and confirm order */
     private void askAmountAndConfirmOrder(int availableAmount, String item) {
-        // TODO
+     System.out.println("How many of this item do you want?");
+     int desiredAmount = reader.nextInt();
+     reader.nextLine();
+
+     if(desiredAmount <= availableAmount) {
+         System.out.println("The order has been placed: " + item + " - " + desiredAmount);
+     } else {
+         System.out.println("The desired amount is higher than available. ");
+         System.out.println("Do you want to order the maximum available amount? y/n");
+         String answer = reader.nextLine();
+         if(Objects.equals(answer, "y")){
+             System.out.println("The order has been placed: " + item + " - " + availableAmount);
+         }
+     }
     }
 
     /**
