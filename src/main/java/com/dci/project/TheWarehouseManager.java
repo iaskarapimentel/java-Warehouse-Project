@@ -2,11 +2,16 @@ package com.dci.project;
 import com.dci.project.data.Item;
 import com.dci.project.data.Repository;
 
+//Iaskara confirme if you can delete line  6 - 7 - 8
 //import static resources.data.json;
 //import static dci.java.intro.Repository.WAREHOUSE1;
 //import static dci.java.intro.Repository.WAREHOUSE2;
 
 import java.sql.Array;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 import java.util.*;
 
@@ -45,10 +50,10 @@ public class TheWarehouseManager {
         }
     }
 
-//    /** Ask for user's choice of action */
+    /** Ask for user's choice of action */
     public int getUsersChoice() {
     // TODO
-        System.out.println("Please choose one option: ");
+        System.out.println("What would you like to do? ");
         printingChoices();
         int userChoice = reader.nextInt();
         reader.nextLine();
@@ -56,7 +61,6 @@ public class TheWarehouseManager {
     }
 
     /** Initiate an action based on given option */
-//    Do um switch case
     public void performAction(int userChoice) {
         switch (userChoice) {
             case 1:
@@ -71,6 +75,7 @@ public class TheWarehouseManager {
                 break;
             default:
                 System.out.println("Sorry, this operation is not valid. ");
+//          I must call again the printing choices for the user see the numbers that are valid
         }
     }
 
@@ -81,6 +86,9 @@ public class TheWarehouseManager {
      */
     public boolean confirm(String message) {
         // TODO
+//        System.out.printf("%s (y/n)/n", message);
+//    I though could be yes do the action true//    No would be false so that means it doesn't want to perform another action
+
         return false;
     }
 
@@ -103,25 +111,25 @@ public class TheWarehouseManager {
     /** Print a welcome message with the given user's name */
     private void greetUser() {
         // TODO
-        System.out.println("Hello " + this.userName + ". Welcome to our Warehouse System. How can I help you?");
+        System.out.println("Hello " + this.userName + ". Welcome to our Warehouse System");
     }
 
 //    1-List items by warehouse
-//    the method that take the number of warehouse as parameter is Rep.getWarehouse();
+//    From Collections - the method that take the number of warehouse as parameter is Rep.getWarehouse();
     private void listItemsByWarehouse() {
         Set<Integer> idsWarehouse = Repository.getWarehouses();
         for(int id : idsWarehouse){
             List<Item> itemsByWarehouse = Repository.getItemsByWarehouse(id);
             System.out.println("WAREHOUSE" + id);
             listItems(itemsByWarehouse);
-            System.out.println("Total items in WAREHOUSE : " +id+  ":" + itemsByWarehouse.size());
+            System.out.println("Total items in WAREHOUSE : " +id+  " - " + itemsByWarehouse.size());
         }
     }
 
 //    This method is printing
     private void listItems(List<Item> itemsByWarehouse) {
         for (Item item : itemsByWarehouse) {
-            System.out.println(item);
+            System.out.println("- " + item);
         }
     }
 
@@ -129,25 +137,22 @@ public class TheWarehouseManager {
      *
      * @param itemsByWarehouse list of items in the warehouse
      * @param itemName the item that the user is looking for it.
-     * @return the number of items that searchItem
+     * @return the list of items that searchItem
      */
+    public List<Item> find(List<Item> itemsByWarehouse, String itemName){
 
-    public int searchItemInWarehouse(List<Item> itemsByWarehouse, String itemName){
-
-        int numOfItems = 0;
+        List<Item> listItems = new ArrayList<Item>();
         for (Item item : itemsByWarehouse) {
             if(itemName.toLowerCase().contains(item.toString().toLowerCase())){
-                numOfItems++;
+                listItems.add(item);
             }
         }
-        return numOfItems;
+        return listItems;
     }
 
-//    Ask the user to input an item name and search the warehouses
-//    if has item - ask user if he wants to order the item
-//    if the user choose y - proceed with order method (independent one)
-
-//    numItemsByWarehouse each element in the array list is the quantity of items in one warehouse
+//    created an empty list numItemsByWarehouse then
+//    after adding the listOfSearchItem which is the list containing the search item itself
+//    each element [n, n] in the array list numItemsByWarehouse is the quantity of items in one warehouse
     private void searchItemAndPlaceOrder() {
         String itemName = askItemToOrder();
 
@@ -155,7 +160,11 @@ public class TheWarehouseManager {
         List<Integer> numItemsByWarehouse = new ArrayList<Integer>();
         for(int id : idsWarehouse) {
             List<Item> itemsByWarehouse = Repository.getItemsByWarehouse(id);
-            numItemsByWarehouse.add(searchItemInWarehouse(itemsByWarehouse, itemName));
+            List<Item> listOfSearchItem = find(itemsByWarehouse, itemName);
+            for(Item item : listOfSearchItem) {
+                System.out.println("Warehouse " + id + " (in stock for " + daysInStock(item) + " days)" );
+            }
+            numItemsByWarehouse.add(listOfSearchItem.size());
         }
 
         int availableAmount = checkingAvailability(numItemsByWarehouse.get(0), numItemsByWarehouse.get(1));
@@ -170,11 +179,6 @@ public class TheWarehouseManager {
     public String userAnswerToOrder(String answer) {
         return answer;
     }
-
-//    Search item
-//    total of items - location
-//    Change this method to getAvailableAmount to return the number of items instead only printing
-//    You need this numbers to place order.
 
     /**
      *
@@ -196,7 +200,6 @@ public class TheWarehouseManager {
 
         if(numItemsWarehouse1 > 0 && numItemsWarehouse2 > 0){
             System.out.println("Amount available: " + (numItemsWarehouse1 + numItemsWarehouse2));
-            System.out.println("Location: Both warehouses");
             if (numItemsWarehouse1 > numItemsWarehouse2) {
                 System.out.println("Maximum availability: " + numItemsWarehouse1 + " in Warehouse 1");
             } else {
@@ -206,6 +209,18 @@ public class TheWarehouseManager {
         }
         System.out.println("Not in stock");
         return 0;
+    }
+
+    /*
+    https://www.baeldung.com/java-date-difference
+    https://www.baeldung.com/java-date-to-localdate-and-localdatetime
+     */
+    private long daysInStock(Item item){
+        LocalDate today = LocalDate.now();
+        LocalDate initialDate = item.getDateOfStock().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        long daysOfStock = ChronoUnit.DAYS.between(initialDate, today);
+        return daysOfStock;
     }
 
     /**
@@ -220,10 +235,12 @@ public class TheWarehouseManager {
         return itemName;
     }
 
+//** Ask order amount and confirm order*/
     private void askAmountAndConfirmOrder(int availableAmount, String item) {
      System.out.println("How many of this item do you want?");
      int desiredAmount = reader.nextInt();
      reader.nextLine();
+
 
      if(desiredAmount <= availableAmount) {
          System.out.println("The order has been placed: " + item + " - " + desiredAmount);
@@ -239,11 +256,27 @@ public class TheWarehouseManager {
 
     /**
      * Get amount of order
+     * ask the user how many do they want = Looks he receives a parameter maybe you should take care about the statements here
+     * Take care if the user type 0
      *
      * @param availableAmount
      * @return
      */
 //    private int getOrderAmount(int availableAmount) {
-//        // TODO
+//        System.out.println("How many of this item do you want?");
+//        int desiredAmount = reader.nextInt();
+//        reader.nextLine();
+//
+//        if(desiredAmount <= availableAmount) {
+//            System.out.println("The order has been placed: " + item + " - " + desiredAmount);
+//        } else {
+//            System.out.println("The desired amount is higher than available. ");
+//            System.out.println("Do you want to order the maximum available amount? y/n");
+//            String answer = reader.nextLine();
+//            if(Objects.equals(answer, "y")){
+//                System.out.println("The order has been placed: " + item + " - " + availableAmount);
+//            }
+//        }
+
 //    }
 }

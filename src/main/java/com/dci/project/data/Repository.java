@@ -22,7 +22,7 @@ public class Repository {
      * Load item records from the data.json file
      */
     static {
-         System.out.println("Loading items");
+//         System.out.println("Loading items");
         try (BufferedReader reader =
                      new BufferedReader(
                              new InputStreamReader(
@@ -74,7 +74,7 @@ public class Repository {
     Set<Integer> warehouses = new HashSet<Integer>();
         for(Item item : getAllItems()){
             warehouses.add(item.getWarehouse());
-//            this getWarehouse is coming from Item class
+//            the getWarehouse() method is coming from Item class
         }
         return warehouses;
     }
@@ -94,6 +94,7 @@ public class Repository {
             }
         }
         return itemsByWarehouse;
+//        return getItemsByWarehouse(warehouse,getAllItems());
     }
 
     /**
@@ -104,8 +105,13 @@ public class Repository {
      */
 //    Where this master-list is coming from?
     public static List<Item> getItemsByWarehouse(int warehouse, List<Item> masterList) {
-        // TODO
-        return null;
+        List<Item> itemsByWarehouse = new ArrayList<Item>();
+        for(Item item: masterList){
+            if(item.getWarehouse() == warehouse){
+                itemsByWarehouse.add(item);
+            }
+        }
+        return itemsByWarehouse;
     }
 
     // By Category
