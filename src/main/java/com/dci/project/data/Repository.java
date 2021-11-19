@@ -122,7 +122,11 @@ public class Repository {
      */
     public static Set<String> getCategories() {
         // TODO
-        return null;
+        Set<String> categories = new HashSet<String>();
+        for(Item item : getAllItems()){
+            categories.add(item.getCategory());
+        }
+        return categories;
     }
 
     /**
@@ -133,7 +137,7 @@ public class Repository {
      */
     public static List<Item> getItemsByCategory(String category) {
         // TODO
-        return null;
+        return getItemsByCategory(category, getAllItems());
     }
 
     /**
@@ -143,7 +147,12 @@ public class Repository {
      * @return the items
      */
     public static List<Item> getItemsByCategory(String category, List<Item> masterList) {
-        // TODO
-        return null;
+        List<Item> itemsByCategory = new ArrayList<Item>();
+        for (Item item : masterList) {
+            if (item.getCategory().equals(category)) {
+                itemsByCategory.add(item);
+            }
+        }
+        return itemsByCategory;
     }
 }

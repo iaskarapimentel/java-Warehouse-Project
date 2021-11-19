@@ -29,7 +29,7 @@ public class TheWarehouseManager {
     private final Scanner reader = new Scanner(System.in);
 
     private final String[] userOptions = {
-            "1. List items by warehouse", "2. Search an item and place an order", "3. Quit"
+            "1. List items by warehouse", "2. Search an item and place an order", "3. Browse by category", "4. Quit"
     };
     // To refer the user provided name.
     private String userName;
@@ -71,6 +71,10 @@ public class TheWarehouseManager {
                 searchItemAndPlaceOrder();
                 break;
             case 3:
+//                Browse by category option
+//                browseByCategory();
+                break;
+            case 4:
                 quit();
                 break;
             default:
@@ -207,6 +211,7 @@ public class TheWarehouseManager {
             }
             return (numItemsWarehouse1 + numItemsWarehouse2);
         }
+//        in Collections we need to specified that a non found item has 0 available.
         System.out.println("Not in stock");
         return 0;
     }
@@ -238,8 +243,7 @@ public class TheWarehouseManager {
 //** Ask order amount and confirm order*/
     private void askAmountAndConfirmOrder(int availableAmount, String item) {
      System.out.println("How many of this item do you want?");
-     int desiredAmount = reader.nextInt();
-     reader.nextLine();
+     int desiredAmount = Integer.parseInt(reader.nextLine());
 
 
      if(desiredAmount <= availableAmount) {
@@ -259,7 +263,7 @@ public class TheWarehouseManager {
      * ask the user how many do they want = Looks he receives a parameter maybe you should take care about the statements here
      * Take care if the user type 0
      *
-     * @param availableAmount
+     * @param
      * @return
      */
 //    private int getOrderAmount(int availableAmount) {
@@ -279,4 +283,32 @@ public class TheWarehouseManager {
 //        }
 
 //    }
+
+//    New menu option (browse by category)
+//    I need the amountAvailable for each category
+
+    private void browseByCategory(String category){
+        System.out.println(menuOfCategory());
+//        int availableAmount = checkingAvailability(numItemsByWarehouse.get(0), numItemsByWarehouse.get(1));
+//        numItemsByWarehouse
+
+
+    }
+/*
+       This menuOfCategory must have a number for each category
+       Example:
+        1. Keyboard (34)
+        2. Smartphone (39)
+        for this reason the Map is a good choice.
+        after this I have bind the amountAvailable  between ();
+ */
+    private Map<Integer, String> menuOfCategory() {
+        Map<Integer, String> menuOptionsOfCategories = new HashMap<Integer, String>();
+        int option = 1;
+        for (String category : Repository.getCategories()) {
+            menuOptionsOfCategories.put(option++, category);
+        }
+        return menuOptionsOfCategories;
+    }
+
 }
