@@ -55,8 +55,7 @@ public class TheWarehouseManager {
     // TODO
         System.out.println("What would you like to do? ");
         printingChoices();
-        int userChoice = reader.nextInt();
-        reader.nextLine();
+        int userChoice = Integer.parseInt(reader.nextLine());
         return userChoice;
     }
 
@@ -71,7 +70,7 @@ public class TheWarehouseManager {
                 break;
             case 3:
 //                Browse by category option
-//                browseByCategory();
+                browseByCategory();
                 break;
             case 4:
                 quit();
@@ -137,8 +136,8 @@ public class TheWarehouseManager {
             totalListedItems += itemsByWarehouse.size();
         }
 
-        String sentenceForListedItems = "Listed " + totalListedItems + " items.";
-        SESSION_ACTIONS.add(sentenceForListedItems);
+        String sentenceForSessionActions = "Listed " + totalListedItems + " items.";
+        SESSION_ACTIONS.add(sentenceForSessionActions);
 
 //        Call this method(getTotalListedItems),
 //        get the number and construct appropriate string 'Listed {number} items.'.
@@ -195,8 +194,8 @@ public class TheWarehouseManager {
         }
 
         String appropriateArticle = getAppropriateIndefiniteArticle(itemName);
-        String sentenceForListedItems = "Searched " + appropriateArticle + " " + itemName + ".";
-        SESSION_ACTIONS.add(sentenceForListedItems);
+        String sentenceForSessionActions = "Searched " + appropriateArticle + " " + itemName + ".";
+        SESSION_ACTIONS.add(sentenceForSessionActions );
     }
 
     /**
@@ -294,30 +293,47 @@ public class TheWarehouseManager {
 //    }
 
 //    New menu option (browse by category)
-//    I need the amountAvailable for each category
-    private void browseByCategory(String category){
-        System.out.println(menuOfCategory());
-//        int availableAmount = checkingAvailability(numItemsByWarehouse.get(0), numItemsByWarehouse.get(1));
-//        numItemsByWarehouse
+//    The user will access the items by category
+//    by the Key, access the value and then display all the items related on this value
+    private void browseByCategory(){
+        Map<Integer, String> menuOfCategory = menuOfCategory();
+        System.out.println("Type the number of the category to browse: ");
+        int answer = Integer.parseInt(reader.nextLine());
+        String category = menuOfCategory.get(answer);
+        printItemsByCategory(category);
 
-
+        String sentenceForSessionActions = "Browsed the category " + category;
+        SESSION_ACTIONS.add(sentenceForSessionActions);
     }
+
+    private void printItemsByCategory(String category){
+        System.out.println("List of " + category + " available:");
+        List<Item> itemsOfCategory = StockRepository.getItemsByCategory(category);
+        for(Item item : itemsOfCategory) {
+            System.out.println(item.toString() + item.getWarehouse());
+        }
+    }
+
 /*
        This menuOfCategory must have a number for each category
        Example:
         1. Keyboard (34)
         2. Smartphone (39)
         for this reason the Map is a good choice.
-        after this I have to bind the amountAvailable  between ();
+        after this I have to bind the amountAvailable between ();
  */
     private Map<Integer, String> menuOfCategory() {
         Map<Integer, String> menuOptionsOfCategories = new HashMap<Integer, String>();
         int option = 1;
         for (String category : StockRepository.getCategories()) {
-            menuOptionsOfCategories.put(option++, category);
+            int numItemsByCategory = StockRepository.getItemsByCategory(category).size();
+            menuOptionsOfCategories.put(option, category);
+            System.out.println(option + ". " + category + " (" + numItemsByCategory + ")");
+            option++;
         }
         return menuOptionsOfCategories;
     }
+
 
 //    SESSION_ACTIONS - methods related
 //    returns an integer value that is the number of the total items in the list.
@@ -326,13 +342,9 @@ public class TheWarehouseManager {
     }
 
     private String getAppropriateIndefiniteArticle(String itemName){
-//        I can establish a patter a,e,i,o,u if the itemName start with this patter the article will be "an" else a
         String appropriateArticle;
-        String vowel = "[aeiou]";
-        Pattern patter = Pattern.compile(vowel);
-        Matcher matcher = patter.matcher(itemName);
 
-        if(itemName.startsWith(patter.toString())){
+        if(Pattern.compile("^[aeiouAEIOU]").matcher(itemName).find()){
             appropriateArticle = "an";
         } else {
             appropriateArticle = "a";
