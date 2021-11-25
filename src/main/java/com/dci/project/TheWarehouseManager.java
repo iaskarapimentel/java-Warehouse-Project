@@ -55,8 +55,7 @@ public class TheWarehouseManager {
     // TODO
         System.out.println("What would you like to do? ");
         printingChoices();
-        int userChoice = Integer.parseInt(reader.nextLine());
-        return userChoice;
+        return Integer.parseInt(reader.nextLine());
     }
 
     /** Initiate an action based on given option */
@@ -209,13 +208,10 @@ public class TheWarehouseManager {
         SESSION_ACTIONS.add(sentenceForSessionActions );
     }
 
-
     public String userPassword(){
         System.out.println("Please type you password:");
         return reader.nextLine();
     }
-
-
 
     /**
      *
@@ -352,7 +348,6 @@ public class TheWarehouseManager {
         }
         return menuOptionsOfCategories;
     }
-
 
 //    SESSION_ACTIONS - methods related
 //    returns an integer value that is the number of the total items in the list.
