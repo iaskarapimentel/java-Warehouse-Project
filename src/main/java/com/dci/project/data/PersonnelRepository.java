@@ -32,7 +32,7 @@ public class PersonnelRepository {
 		try {
 			PERSON_LIST.clear();
 
-			reader = new BufferedReader(new FileReader("./data/personnel.json"));
+			reader = new BufferedReader(new FileReader("src/resources/personnel.json"));
 			Object data = JSONValue.parse(reader);
 			if (data instanceof JSONArray) {
 				JSONArray dataArray = (JSONArray) data;
@@ -68,9 +68,15 @@ public class PersonnelRepository {
 		return PERSON_LIST;
 	}
 
-//	Coloquei em comentario para ver rodar
-//	public static boolean isUserValid(String userName, String password) {
-		//to implement
-//	}
+	public static boolean isUserValid(String userName, String password) {
+		for (Person pessoa : getAllPersons()) {
+			if (pessoa.getUserName().contains(userName) && pessoa.getPassword().contains(password)) {
+//				yes this person can place order
+//				means the user is valid but is is not I need to che the next
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

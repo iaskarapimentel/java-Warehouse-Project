@@ -189,7 +189,24 @@ public class TheWarehouseManager {
         if( availableAmount > 0){
             String message = "Would you like to order this item?";
             if (confirm(message)) {
-                askAmountAndConfirmOrder(availableAmount, itemName);
+                String password = userPassword();
+                boolean userValidation = PersonnelRepository.isUserValid(this.userName, password);
+//                userValidation is true or false depending on the user validation
+//                if is true the user can place order
+                if(userValidation){
+                    askAmountAndConfirmOrder(availableAmount, itemName);
+                } else {
+//                if not I should ask again the username and Password until match
+//                furthermore I think I could write a message saying if you are not a Personnel you are not allowed to place an order
+//                also show a way to get out the ask again.
+                    System.out.println("Username or password not found. Please type again your username and password:");
+                    seekUserName();
+                    password = userPassword();
+                    userValidation = PersonnelRepository.isUserValid(this.userName, password);
+                    if (userValidation){
+                        askAmountAndConfirmOrder(availableAmount, itemName);
+                    }
+                }
             }
         }
 
@@ -197,6 +214,14 @@ public class TheWarehouseManager {
         String sentenceForSessionActions = "Searched " + appropriateArticle + " " + itemName + ".";
         SESSION_ACTIONS.add(sentenceForSessionActions );
     }
+
+
+    public String userPassword(){
+        System.out.println("Please type you password:");
+        return reader.nextLine();
+    }
+
+
 
     /**
      *
