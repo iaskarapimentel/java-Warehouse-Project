@@ -70,9 +70,7 @@ public class PersonnelRepository {
 
 	public static boolean isUserValid(String userName, String password) {
 		for (Person pessoa : getAllPersons()) {
-			if (pessoa.getUserName().contains(userName) && pessoa.getPassword().contains(password)) {
-//				yes this person can place order
-//				means the user is valid but is is not I need to che the next
+			if (pessoa.getUserName().equals(userName) && pessoa.getPassword().equals(password)) {
 				return true;
 			}
 		}
