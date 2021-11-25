@@ -1,11 +1,8 @@
 package com.dci.project;
 import com.dci.project.data.Item;
-import com.dci.project.data.Repository;
-
-//Iaskara confirme if you can delete line  6 - 7 - 8
-//import static resources.data.json;
-//import static dci.java.intro.Repository.WAREHOUSE1;
-//import static dci.java.intro.Repository.WAREHOUSE2;
+import com.dci.project.data.StockRepository;
+import com.dci.project.data.Person;
+import com.dci.project.data.PersonnelRepository;
 
 import java.sql.Array;
 import java.time.LocalDate;
@@ -14,6 +11,8 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Provides necessary methods to deal through the Warehouse management actions
@@ -23,6 +22,7 @@ import java.util.*;
 public class TheWarehouseManager {
     // =====================================================================================
     // Member Variables
+    private static List<String> SESSION_ACTIONS = new ArrayList<String>();
     // =====================================================================================
 
     // To read inputs from the console/CLI
@@ -55,8 +55,7 @@ public class TheWarehouseManager {
     // TODO
         System.out.println("What would you like to do? ");
         printingChoices();
-        int userChoice = reader.nextInt();
-        reader.nextLine();
+        int userChoice = Integer.parseInt(reader.nextLine());
         return userChoice;
     }
 
@@ -65,14 +64,13 @@ public class TheWarehouseManager {
         switch (userChoice) {
             case 1:
                 listItemsByWarehouse();
-//                System.out.println("Would you like to perform another action? ");
             break;
             case 2:
                 searchItemAndPlaceOrder();
                 break;
             case 3:
 //                Browse by category option
-//                browseByCategory();
+                browseByCategory();
                 break;
             case 4:
                 quit();
@@ -89,16 +87,23 @@ public class TheWarehouseManager {
      * @return action
      */
     public boolean confirm(String message) {
-        // TODO
-//        System.out.printf("%s (y/n)/n", message);
-//    I though could be yes do the action true//    No would be false so that means it doesn't want to perform another action
+        String answer;
+        do{
+            System.out.printf("%s (y/n)\n",message);
+            answer = this.reader.nextLine();
+            if(answer.length() > 0){
+                answer = answer.trim();
+            }
+            answer = answer.toLowerCase();
 
-        return false;
+        }while(!answer.startsWith("y") && ! answer.startsWith("n"));
+        return answer.startsWith("y");
     }
 
     /** End the application */
     public void quit() {
         System.out.printf("\nThank you for your visit, %s!\n", this.userName);
+        printSessionActions();
         System.exit(0);
     }
 
@@ -121,13 +126,22 @@ public class TheWarehouseManager {
 //    1-List items by warehouse
 //    From Collections - the method that take the number of warehouse as parameter is Rep.getWarehouse();
     private void listItemsByWarehouse() {
-        Set<Integer> idsWarehouse = Repository.getWarehouses();
+        Set<Integer> idsWarehouse = StockRepository.getWarehouses();
+        int totalListedItems = 0;
         for(int id : idsWarehouse){
-            List<Item> itemsByWarehouse = Repository.getItemsByWarehouse(id);
+            List<Item> itemsByWarehouse = StockRepository.getItemsByWarehouse(id);
             System.out.println("WAREHOUSE" + id);
             listItems(itemsByWarehouse);
             System.out.println("Total items in WAREHOUSE : " +id+  " - " + itemsByWarehouse.size());
+            totalListedItems += itemsByWarehouse.size();
         }
+
+        String sentenceForSessionActions = "Listed " + totalListedItems + " items.";
+        SESSION_ACTIONS.add(sentenceForSessionActions);
+
+//        Call this method(getTotalListedItems),
+//        get the number and construct appropriate string 'Listed {number} items.'.
+//        Then add this string to the static List of String i.e 'SESSION_ACTIONS'.
     }
 
 //    This method is printing
@@ -160,10 +174,10 @@ public class TheWarehouseManager {
     private void searchItemAndPlaceOrder() {
         String itemName = askItemToOrder();
 
-        Set<Integer> idsWarehouse = Repository.getWarehouses();
+        Set<Integer> idsWarehouse = StockRepository.getWarehouses();
         List<Integer> numItemsByWarehouse = new ArrayList<Integer>();
         for(int id : idsWarehouse) {
-            List<Item> itemsByWarehouse = Repository.getItemsByWarehouse(id);
+            List<Item> itemsByWarehouse = StockRepository.getItemsByWarehouse(id);
             List<Item> listOfSearchItem = find(itemsByWarehouse, itemName);
             for(Item item : listOfSearchItem) {
                 System.out.println("Warehouse " + id + " (in stock for " + daysInStock(item) + " days)" );
@@ -173,16 +187,41 @@ public class TheWarehouseManager {
 
         int availableAmount = checkingAvailability(numItemsByWarehouse.get(0), numItemsByWarehouse.get(1));
         if( availableAmount > 0){
-            System.out.println("Would you like to order this item?(y/n)");
-                if (Objects.equals(userAnswerToOrder(reader.nextLine()), "y")) {
+            String message = "Would you like to order this item?";
+            if (confirm(message)) {
+                String password = userPassword();
+                boolean userValidation = PersonnelRepository.isUserValid(this.userName, password);
+//                userValidation is true or false depending on the user validation
+//                if is true the user can place order
+                if(userValidation){
                     askAmountAndConfirmOrder(availableAmount, itemName);
+                } else {
+//                if not I should ask again the username and Password until match
+//                furthermore I think I could write a message saying if you are not a Personnel you are not allowed to place an order
+//                also show a way to get out the ask again.
+                    System.out.println("Username or password not found. Please type again your username and password:");
+                    seekUserName();
+                    password = userPassword();
+                    userValidation = PersonnelRepository.isUserValid(this.userName, password);
+                    if (userValidation){
+                        askAmountAndConfirmOrder(availableAmount, itemName);
+                    }
+                }
             }
         }
+
+        String appropriateArticle = getAppropriateIndefiniteArticle(itemName);
+        String sentenceForSessionActions = "Searched " + appropriateArticle + " " + itemName + ".";
+        SESSION_ACTIONS.add(sentenceForSessionActions );
     }
-//take the user answer if y place order if n
-    public String userAnswerToOrder(String answer) {
-        return answer;
+
+
+    public String userPassword(){
+        System.out.println("Please type you password:");
+        return reader.nextLine();
     }
+
+
 
     /**
      *
@@ -211,7 +250,7 @@ public class TheWarehouseManager {
             }
             return (numItemsWarehouse1 + numItemsWarehouse2);
         }
-//        in Collections we need to specified that a non found item has 0 available.
+//        in the Collections task we need to specified that a non found item has 0 available.
         System.out.println("Not in stock");
         return 0;
     }
@@ -224,8 +263,7 @@ public class TheWarehouseManager {
         LocalDate today = LocalDate.now();
         LocalDate initialDate = item.getDateOfStock().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        long daysOfStock = ChronoUnit.DAYS.between(initialDate, today);
-        return daysOfStock;
+        return ChronoUnit.DAYS.between(initialDate, today);
     }
 
     /**
@@ -234,10 +272,8 @@ public class TheWarehouseManager {
      * @return String itemName
      */
     private String askItemToOrder() {
-        // TODO
         System.out.println("Please enter the item that your are looking for it: ");
-        String itemName = reader.nextLine();
-        return itemName;
+        return reader.nextLine();
     }
 
 //** Ask order amount and confirm order*/
@@ -245,14 +281,11 @@ public class TheWarehouseManager {
      System.out.println("How many of this item do you want?");
      int desiredAmount = Integer.parseInt(reader.nextLine());
 
-
      if(desiredAmount <= availableAmount) {
          System.out.println("The order has been placed: " + item + " - " + desiredAmount);
      } else {
          System.out.println("The desired amount is higher than available. ");
-         System.out.println("Do you want to order the maximum available amount? y/n");
-         String answer = reader.nextLine();
-         if(Objects.equals(answer, "y")){
+         if(confirm("Do you want to order the maximum available amount?")){
              System.out.println("The order has been placed: " + item + " - " + availableAmount);
          }
      }
@@ -285,30 +318,71 @@ public class TheWarehouseManager {
 //    }
 
 //    New menu option (browse by category)
-//    I need the amountAvailable for each category
+//    The user will access the items by category
+//    by the Key, access the value and then display all the items related on this value
+    private void browseByCategory(){
+        Map<Integer, String> menuOfCategory = menuOfCategory();
+        System.out.println("Type the number of the category to browse: ");
+        int answer = Integer.parseInt(reader.nextLine());
+        String category = menuOfCategory.get(answer);
+        printItemsByCategory(category);
 
-    private void browseByCategory(String category){
-        System.out.println(menuOfCategory());
-//        int availableAmount = checkingAvailability(numItemsByWarehouse.get(0), numItemsByWarehouse.get(1));
-//        numItemsByWarehouse
-
-
+        String sentenceForSessionActions = "Browsed the category " + category;
+        SESSION_ACTIONS.add(sentenceForSessionActions);
     }
+
+    private void printItemsByCategory(String category){
+        System.out.println("List of " + category + " available:");
+        List<Item> itemsOfCategory = StockRepository.getItemsByCategory(category);
+        for(Item item : itemsOfCategory) {
+            System.out.println(item.toString() + item.getWarehouse());
+        }
+    }
+
 /*
        This menuOfCategory must have a number for each category
        Example:
         1. Keyboard (34)
         2. Smartphone (39)
         for this reason the Map is a good choice.
-        after this I have bind the amountAvailable  between ();
+        after this I have to bind the amountAvailable between ();
  */
     private Map<Integer, String> menuOfCategory() {
         Map<Integer, String> menuOptionsOfCategories = new HashMap<Integer, String>();
         int option = 1;
-        for (String category : Repository.getCategories()) {
-            menuOptionsOfCategories.put(option++, category);
+        for (String category : StockRepository.getCategories()) {
+            int numItemsByCategory = StockRepository.getItemsByCategory(category).size();
+            menuOptionsOfCategories.put(option, category);
+            System.out.println(option + ". " + category + " (" + numItemsByCategory + ")");
+            option++;
         }
         return menuOptionsOfCategories;
+    }
+
+
+//    SESSION_ACTIONS - methods related
+//    returns an integer value that is the number of the total items in the list.
+    private int getTotalListedItems(int totalListedItems){
+        return totalListedItems;
+    }
+
+    private String getAppropriateIndefiniteArticle(String itemName){
+        String appropriateArticle;
+
+        if(Pattern.compile("^[aeiouAEIOU]").matcher(itemName).find()){
+            appropriateArticle = "an";
+        } else {
+            appropriateArticle = "a";
+        }
+       return appropriateArticle;
+    }
+
+    private void printSessionActions(){
+        int count = 1;
+        for(String action : SESSION_ACTIONS){
+            System.out.println(count + ". " + action);
+            count++;
+        }
     }
 
 }
