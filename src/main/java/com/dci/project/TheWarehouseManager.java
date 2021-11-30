@@ -1,8 +1,8 @@
 package com.dci.project;
-import com.dci.project.data.Item;
-import com.dci.project.data.StockRepository;
-import com.dci.project.data.Person;
-import com.dci.project.data.PersonnelRepository;
+import com.dci.project.data.*;
+
+//import com.dci.project.data.StockRepository;
+//import com.dci.project.data.PersonnelRepository;
 
 import java.sql.Array;
 import java.time.LocalDate;
@@ -125,10 +125,10 @@ public class TheWarehouseManager {
 //    1-List items by warehouse
 //    From Collections - the method that take the number of warehouse as parameter is Rep.getWarehouse();
     private void listItemsByWarehouse() {
-        Set<Integer> idsWarehouse = StockRepository.getWarehouses();
+        Set<Integer> idsWarehouse = WarehouseRepository.getWarehouses();
         int totalListedItems = 0;
         for(int id : idsWarehouse){
-            List<Item> itemsByWarehouse = StockRepository.getItemsByWarehouse(id);
+            List<Item> itemsByWarehouse = WarehouseRepository.getItemsByWarehouse(id);
             System.out.println("WAREHOUSE" + id);
             listItems(itemsByWarehouse);
             System.out.println("Total items in WAREHOUSE : " +id+  " - " + itemsByWarehouse.size());
@@ -173,10 +173,10 @@ public class TheWarehouseManager {
     private void searchItemAndPlaceOrder() {
         String itemName = askItemToOrder();
 
-        Set<Integer> idsWarehouse = StockRepository.getWarehouses();
+        Set<Integer> idsWarehouse = WarehouseRepository.getWarehouses();
         List<Integer> numItemsByWarehouse = new ArrayList<Integer>();
         for(int id : idsWarehouse) {
-            List<Item> itemsByWarehouse = StockRepository.getItemsByWarehouse(id);
+            List<Item> itemsByWarehouse = WarehouseRepository.getItemsByWarehouse(id);
             List<Item> listOfSearchItem = find(itemsByWarehouse, itemName);
             for(Item item : listOfSearchItem) {
                 System.out.println("Warehouse " + id + " (in stock for " + daysInStock(item) + " days)" );
@@ -191,7 +191,7 @@ public class TheWarehouseManager {
                 String password = userPassword();
                 boolean isUserValid;
                 do {
-                    isUserValid = PersonnelRepository.isUserValid(this.userName, password);
+                    isUserValid = UserRepository.isUserValid(this.userName, password);
                     if(isUserValid){
                         askAmountAndConfirmOrder(availableAmount, itemName);
                     } else {
@@ -323,7 +323,7 @@ public class TheWarehouseManager {
 
     private void printItemsByCategory(String category){
         System.out.println("List of " + category + " available:");
-        List<Item> itemsOfCategory = StockRepository.getItemsByCategory(category);
+        List<Item> itemsOfCategory = WarehouseRepository.getItemsByCategory(category);
         for(Item item : itemsOfCategory) {
             System.out.println(item.toString() + item.getWarehouse());
         }
@@ -340,8 +340,8 @@ public class TheWarehouseManager {
     private Map<Integer, String> menuOfCategory() {
         Map<Integer, String> menuOptionsOfCategories = new HashMap<Integer, String>();
         int option = 1;
-        for (String category : StockRepository.getCategories()) {
-            int numItemsByCategory = StockRepository.getItemsByCategory(category).size();
+        for (String category : WarehouseRepository.getCategories()) {
+            int numItemsByCategory = WarehouseRepository.getItemsByCategory(category).size();
             menuOptionsOfCategories.put(option, category);
             System.out.println(option + ". " + category + " (" + numItemsByCategory + ")");
             option++;

@@ -15,6 +15,10 @@ public class User {
         this.name = userName;
     }
 
+    public String getName(){
+        return name;
+    }
+
     public boolean authenticate(String password){
         return false;
     }

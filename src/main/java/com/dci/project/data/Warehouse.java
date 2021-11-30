@@ -12,6 +12,10 @@ public class Warehouse {
         this.id = id;
     }
 
+    public int getId(){return this.id;}
+
+    public List<Item> getStock(){return stock;}
+
     public int occupancy() {
         return stock.size();
     }
@@ -29,10 +33,4 @@ public class Warehouse {
         }
         return foundItems;
     }
-
-
-
-
-
-
 }
