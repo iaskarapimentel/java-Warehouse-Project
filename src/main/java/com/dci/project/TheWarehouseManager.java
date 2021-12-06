@@ -40,8 +40,8 @@ public class TheWarehouseManager {
 
     /** Welcome User */
     public void welcomeUser() {
-        this.seekUserName();
-        this.greetUser();
+        seekUserName();
+        greetUser();
     }
 
     public void printingChoices(){
@@ -101,8 +101,9 @@ public class TheWarehouseManager {
 
     /** End the application */
     public void quit() {
-        System.out.printf("\nThank you for your visit, %s!\n", this.userName);
         printSessionActions();
+        User user = new User(this.userName);
+        user.bye(SESSION_ACTIONS);
         System.exit(0);
     }
 
@@ -118,8 +119,9 @@ public class TheWarehouseManager {
 
     /** Print a welcome message with the given user's name */
     private void greetUser() {
-        // TODO
-        System.out.println("Hello " + this.userName + ". Welcome to our Warehouse System");
+        User user = UserRepository.isUserEmployee(this.userName) ?
+                new Employee(this.userName, null, null) : new User(this.userName);
+        user.greet();
     }
 
 //    1-List items by warehouse

@@ -9,6 +9,8 @@ public class TheWarehouseApp {
      *
      * @param args
      */
+    static  boolean IS_EMPLOYEE;
+
     public static void main(String[] args) {
         TheWarehouseManager theManager = new TheWarehouseManager();
 

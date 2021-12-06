@@ -11,6 +11,8 @@ public class User {
 //    code simpler (here, you will check isAuthenticated without having to check first if it is an employee or a guest).
     private boolean isAuthenticated = false;
 
+    public User(){};
+
     public User(String userName){
         this.name = userName;
     }
@@ -34,12 +36,7 @@ public class User {
                 "please ask one of our staff members to assist you.");
     }
 
-//    SESSION_ACTIONS
-//    The bye method will print a thank you message.
-//    To minimize speculations on how the system handles the log data,
-//    it has been decided that the guest user will not be shown the summary of its actions.
     public void bye(List<String> actions){
-        System.out.println("Thank you for your visit!");
+        System.out.printf("\nThank you for your visit, %s!\n", this.name);
     }
-
 }

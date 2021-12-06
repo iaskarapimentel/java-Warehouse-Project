@@ -7,6 +7,8 @@ public class Employee extends User {
     private String password;
     private List<Employee> headOf = new ArrayList<Employee>();
 
+    public Employee() {}
+
     public Employee(String userName, String password, List<Employee> headOf) {
         super(userName);
         this.password = password;
@@ -35,10 +37,6 @@ public class Employee extends User {
                 "please contact technical support.");
     }
 
-//    The bye method will also print a thank you message but, additionally,
-//    it will print the summary of actions taken during the session.
-//    This method should call the parent method to print the message defined
-//    there and then print the list of actions. It should not redefine the Thank you for your visit, {name}! message.
     public void bye(List<String> actions){
         super.bye(actions);
         for(String action : actions){
