@@ -25,6 +25,17 @@ public class Item {
 	 */
 	private Date dateOfStock;
 
+	//	constructor
+	public Item(){}
+
+//o item nao tem warehouse - the warehouse tem o item
+	public Item(String state, String category, Date dateOfStock){
+		this.state = state;
+		this.category = category;
+		this.dateOfStock = dateOfStock;
+	}
+
+
 	// setters and getters
 	public String getState() {
 		return state;

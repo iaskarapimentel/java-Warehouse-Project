@@ -1,8 +1,8 @@
 package com.dci.project;
-import com.dci.project.data.Item;
-import com.dci.project.data.StockRepository;
-import com.dci.project.data.Person;
-import com.dci.project.data.PersonnelRepository;
+import com.dci.project.data.*;
+
+//import com.dci.project.data.StockRepository;
+//import com.dci.project.data.PersonnelRepository;
 
 import java.sql.Array;
 import java.time.LocalDate;
@@ -40,8 +40,8 @@ public class TheWarehouseManager {
 
     /** Welcome User */
     public void welcomeUser() {
-        this.seekUserName();
-        this.greetUser();
+        seekUserName();
+        greetUser();
     }
 
     public void printingChoices(){
@@ -55,8 +55,7 @@ public class TheWarehouseManager {
     // TODO
         System.out.println("What would you like to do? ");
         printingChoices();
-        int userChoice = Integer.parseInt(reader.nextLine());
-        return userChoice;
+        return Integer.parseInt(reader.nextLine());
     }
 
     /** Initiate an action based on given option */
@@ -102,8 +101,9 @@ public class TheWarehouseManager {
 
     /** End the application */
     public void quit() {
-        System.out.printf("\nThank you for your visit, %s!\n", this.userName);
         printSessionActions();
+        User user = new User(this.userName);
+        user.bye(SESSION_ACTIONS);
         System.exit(0);
     }
 
@@ -119,17 +119,18 @@ public class TheWarehouseManager {
 
     /** Print a welcome message with the given user's name */
     private void greetUser() {
-        // TODO
-        System.out.println("Hello " + this.userName + ". Welcome to our Warehouse System");
+        User user = UserRepository.isUserEmployee(this.userName) ?
+                new Employee(this.userName, null, null) : new User(this.userName);
+        user.greet();
     }
 
 //    1-List items by warehouse
 //    From Collections - the method that take the number of warehouse as parameter is Rep.getWarehouse();
     private void listItemsByWarehouse() {
-        Set<Integer> idsWarehouse = StockRepository.getWarehouses();
+        Set<Integer> idsWarehouse = WarehouseRepository.getWarehouses();
         int totalListedItems = 0;
         for(int id : idsWarehouse){
-            List<Item> itemsByWarehouse = StockRepository.getItemsByWarehouse(id);
+            List<Item> itemsByWarehouse = WarehouseRepository.getItemsByWarehouse(id);
             System.out.println("WAREHOUSE" + id);
             listItems(itemsByWarehouse);
             System.out.println("Total items in WAREHOUSE : " +id+  " - " + itemsByWarehouse.size());
@@ -174,10 +175,10 @@ public class TheWarehouseManager {
     private void searchItemAndPlaceOrder() {
         String itemName = askItemToOrder();
 
-        Set<Integer> idsWarehouse = StockRepository.getWarehouses();
+        Set<Integer> idsWarehouse = WarehouseRepository.getWarehouses();
         List<Integer> numItemsByWarehouse = new ArrayList<Integer>();
         for(int id : idsWarehouse) {
-            List<Item> itemsByWarehouse = StockRepository.getItemsByWarehouse(id);
+            List<Item> itemsByWarehouse = WarehouseRepository.getItemsByWarehouse(id);
             List<Item> listOfSearchItem = find(itemsByWarehouse, itemName);
             for(Item item : listOfSearchItem) {
                 System.out.println("Warehouse " + id + " (in stock for " + daysInStock(item) + " days)" );
@@ -190,23 +191,17 @@ public class TheWarehouseManager {
             String message = "Would you like to order this item?";
             if (confirm(message)) {
                 String password = userPassword();
-                boolean userValidation = PersonnelRepository.isUserValid(this.userName, password);
-//                userValidation is true or false depending on the user validation
-//                if is true the user can place order
-                if(userValidation){
-                    askAmountAndConfirmOrder(availableAmount, itemName);
-                } else {
-//                if not I should ask again the username and Password until match
-//                furthermore I think I could write a message saying if you are not a Personnel you are not allowed to place an order
-//                also show a way to get out the ask again.
-                    System.out.println("Username or password not found. Please type again your username and password:");
-                    seekUserName();
-                    password = userPassword();
-                    userValidation = PersonnelRepository.isUserValid(this.userName, password);
-                    if (userValidation){
+                boolean isUserValid;
+                do {
+                    isUserValid = UserRepository.isUserValid(this.userName, password);
+                    if(isUserValid){
                         askAmountAndConfirmOrder(availableAmount, itemName);
+                    } else {
+                        System.out.println("Username or password not found. Please type again your username and password:");
+                        seekUserName();
+                        password = userPassword();
                     }
-                }
+                } while (!isUserValid);
             }
         }
 
@@ -215,13 +210,10 @@ public class TheWarehouseManager {
         SESSION_ACTIONS.add(sentenceForSessionActions );
     }
 
-
     public String userPassword(){
         System.out.println("Please type you password:");
         return reader.nextLine();
     }
-
-
 
     /**
      *
@@ -333,7 +325,7 @@ public class TheWarehouseManager {
 
     private void printItemsByCategory(String category){
         System.out.println("List of " + category + " available:");
-        List<Item> itemsOfCategory = StockRepository.getItemsByCategory(category);
+        List<Item> itemsOfCategory = WarehouseRepository.getItemsByCategory(category);
         for(Item item : itemsOfCategory) {
             System.out.println(item.toString() + item.getWarehouse());
         }
@@ -350,15 +342,14 @@ public class TheWarehouseManager {
     private Map<Integer, String> menuOfCategory() {
         Map<Integer, String> menuOptionsOfCategories = new HashMap<Integer, String>();
         int option = 1;
-        for (String category : StockRepository.getCategories()) {
-            int numItemsByCategory = StockRepository.getItemsByCategory(category).size();
+        for (String category : WarehouseRepository.getCategories()) {
+            int numItemsByCategory = WarehouseRepository.getItemsByCategory(category).size();
             menuOptionsOfCategories.put(option, category);
             System.out.println(option + ". " + category + " (" + numItemsByCategory + ")");
             option++;
         }
         return menuOptionsOfCategories;
     }
-
 
 //    SESSION_ACTIONS - methods related
 //    returns an integer value that is the number of the total items in the list.
