@@ -9,10 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The Data Repository
@@ -23,6 +20,7 @@ import java.util.Set;
 public class UserRepository {
 
 	private static List<Employee> EMPLOYEE_LIST = new ArrayList<Employee>();
+	private static List<Admin> ADMIN_LIST = new ArrayList<Admin>();
 
 	/**
 	 * Load employee, records from the personnel.json file
@@ -32,6 +30,7 @@ public class UserRepository {
 		BufferedReader reader = null;
 		try {
 			EMPLOYEE_LIST.clear();
+			ADMIN_LIST.clear();
 
 			reader = new BufferedReader(new FileReader("src/resources/personnel.json"));
 			Object data = JSONValue.parse(reader);
@@ -42,8 +41,14 @@ public class UserRepository {
 						JSONObject jsonData = (JSONObject) obj;
 						String userName = jsonData.get("user_name").toString();
 						String password = jsonData.get("password").toString();
-						Employee employee = new Employee(userName, password, null);
-						EMPLOYEE_LIST.add(employee);
+						String userRole = jsonData.get("role").toString();
+						if(Objects.equals(userRole, "EMPLOYEE")){
+							Employee employee = new Employee(userName, password, null);
+							EMPLOYEE_LIST.add(employee);
+						} else {
+							Admin admin = new Admin(userName, password);
+							ADMIN_LIST.add((admin));
+						}
 					}
 				}
 			}
@@ -68,7 +73,7 @@ public class UserRepository {
 		return EMPLOYEE_LIST;
 	}
 
-
+//	maybe this method should be called as isEmployeeValid
 	public static boolean isUserValid(String userName, String password) {
 		List<Employee> employees = getAllEmployees();
 
@@ -90,5 +95,23 @@ public class UserRepository {
 		}
 		return false;
 	}
+
+	public static List<Admin> getAllAdmins(){
+		return ADMIN_LIST;
+	}
+
+	public static boolean isUserAdmin(String name){
+		for (Admin admin : getAllAdmins()) {
+			if(admin.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+//	Add isUserAdmin(OK) and isAdminValid methods and implement them in similar fashion as isUserEmployee and
+//	isEmployeeValid methods (but for Admin) to return the correct boolean value.
+
+
 
 }

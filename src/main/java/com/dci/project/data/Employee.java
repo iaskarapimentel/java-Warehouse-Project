@@ -38,10 +38,11 @@ public class Employee extends User {
     }
 
     public void bye(List<String> actions){
-        super.bye(actions);
-        for(String action : actions){
-            System.out.println(action);
-        }
+//        super.bye(actions);
+//        for(String action : actions){
+//            System.out.println(action);
+//        }
+        System.out.printf("\nThank you for your visit, %s!\n", this.name);
     }
 
 }

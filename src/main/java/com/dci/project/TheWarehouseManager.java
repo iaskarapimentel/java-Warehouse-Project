@@ -102,7 +102,7 @@ public class TheWarehouseManager {
     /** End the application */
     public void quit() {
         printSessionActions();
-        User user = new User(this.userName);
+        User user = new Guest(this.userName);
         user.bye(SESSION_ACTIONS);
         System.exit(0);
     }
@@ -112,15 +112,23 @@ public class TheWarehouseManager {
     // =====================================================================================
 
     /** Get user's name via CLI */
+//    - seekUserName() method :
+//  - Initialize SESSION_USER with Employee or Guest appropriately as per the role of the user_name provided.
     private void seekUserName() {
         System.out.println("Please enter your name: ");
         this.userName = reader.nextLine();
+        User user;
+        if(UserRepository.isUserEmployee(this.userName)){
+            user = new Employee(this.userName, null, null);
+        } else if (UserRepository.isUserAdmin(this.userName)){
+            user = new Admin(this.userName, null);
+        } else {
+            user = new Guest(this.userName);
+        }
     }
 
     /** Print a welcome message with the given user's name */
-    private void greetUser() {
-        User user = UserRepository.isUserEmployee(this.userName) ?
-                new Employee(this.userName, null, null) : new User(this.userName);
+    private void greetUser(User user) {
         user.greet();
     }
 
@@ -327,7 +335,7 @@ public class TheWarehouseManager {
         System.out.println("List of " + category + " available:");
         List<Item> itemsOfCategory = WarehouseRepository.getItemsByCategory(category);
         for(Item item : itemsOfCategory) {
-            System.out.println(item.toString() + item.getWarehouse());
+            System.out.println(item.toString() + " -Warehouse- " + item.getWarehouse());
         }
     }
 

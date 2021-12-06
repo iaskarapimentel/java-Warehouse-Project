@@ -1,4 +1,7 @@
 package com.dci.project;
+
+import com.dci.project.data.User;
+
 /**
  *
  * @author riteshp
@@ -9,7 +12,8 @@ public class TheWarehouseApp {
      *
      * @param args
      */
-    static  boolean IS_EMPLOYEE;
+    static boolean IS_EMPLOYEE;
+    public static User SESSION_USER;
 
     public static void main(String[] args) {
         TheWarehouseManager theManager = new TheWarehouseManager();
